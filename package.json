@@ -1,0 +1,14 @@
+{
+  "name": "devops-project3-cicd-basics",
+  "version": "1.0.0",
+  "description": "CI/CD Pipeline Basics - DecodeLabs DevOps Project 3",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "jest",
+    "build": "echo 'Build step: nothing to compile for plain JS, but this is where you would run webpack/tsc/etc.'"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

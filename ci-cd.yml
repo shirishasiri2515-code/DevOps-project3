@@ -1,0 +1,50 @@
+name: CI/CD Pipeline
+
+# STAGE 1: Waking the factory — triggered by a git push
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  # JOB 1: Build & Test (Continuous Integration)
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js (sterile build environment)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Run automated tests (the quality gate)
+        run: npm test
+
+  # JOB 2: Deploy (Continuous Deployment) — only runs if build-and-test passes
+  deploy:
+    name: Deploy
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy step (placeholder)
+        run: |
+          echo "Deploying verified artifact..."
+          echo "In a real pipeline, this step would SSH into a server"
+          echo "(using GitHub Secrets: EC2_HOST, EC2_USER, EC2_PRIVATE_KEY)"
+          echo "and restart the live application."
